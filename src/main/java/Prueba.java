@@ -24,7 +24,15 @@ import jakarta.servlet.http.HttpServletResponse;
 public class Prueba extends HttpServlet {
 
 	private static final long serialVersionUID = 1L;
-	private String consulta = "select * from products where productline = ?";
+	
+	/*
+	 * GET. Solicita un recurso en la URL de la solicitud. Se usa para consultar información.
+	 * POST. Envía información al servicio para su procesamiento, creando un nuevo registro.
+	 * PUT. Actualiza un registro o recurso existente.
+	 * PATCH. Como el PUT, pero permite actualizar solo una fracción del registro.
+	 * DELETE. Elimina un registro existente.
+	 * HEAD. Obtiene información de un registro.
+	 */
 	
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
