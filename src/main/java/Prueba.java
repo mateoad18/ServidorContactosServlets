@@ -29,7 +29,7 @@ public class Prueba extends HttpServlet {
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		response.setContentType("text/json");
+//		response.setContentType("text/json");
 		PrintWriter out = new PrintWriter(response.getWriter());
 		out.println("respuesta a GET");
 	}

@@ -19,51 +19,35 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-@WebServlet("/modelsbyproductline")
-public class ModelsByProductLine extends HttpServlet {
+@WebServlet("/api")
+public class APIRestSevlet extends HttpServlet {
 
 	private static final long serialVersionUID = 1L;
-	private String consulta = "select * from products where productline = ?";
+	private static String consulta = "select telefono from telefonos where contacto = '?'";
 	
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		resp.setContentType("text/json");
+		resp.setContentType("text/plain");
+		String val;
 		PrintWriter out = new PrintWriter(resp.getWriter());
+		if ((val = req.getParameter("buscar")) != null)
+			buscar(val, out);			
+		else if ((val = req.getParameter("buscar")) != null)
+			listar(out);
+	}
+		
+	static void buscar(String nombre, PrintWriter out) {
 		Connection con = null;
 		PreparedStatement stm = null;
 		ResultSet rs = null;
-		JsonFactory factory = new JsonFactory();
-		JsonGenerator generator = factory.createGenerator(out);
 		try {
 			Context context = new InitialContext();
-			DataSource ds = (DataSource) context.lookup("java:comp/env/jdbc/classicmodels");
+			DataSource ds = (DataSource) context.lookup("java:comp/env/jdbc/contactos");
 			con = ds.getConnection();
 			PreparedStatement statement = con.prepareStatement(consulta);
-			statement.setString(1, "Motorcycles");
 			rs = statement.executeQuery();
-			generator.writeStartObject();
-			while (rs.next()) {
-				Product product = new Product(
-					rs.getString("productCode"),
-					rs.getString("productName"),
-					rs.getString("productLine"),
-					rs.getString("productScale"),
-					rs.getString("productVendor"),
-					rs.getString("productDescription"),
-					rs.getInt("quantityInStock"),
-					rs.getFloat("buyPrice"),
-					rs.getFloat("MSRP"));
-				generator.writeObject(product);
-//				generator.writeStringField("productCode", rs.getString("productCode"));
-//				generator.writeStringField("productName", rs.getString("productName"));
-//				generator.writeStringField("productLine", rs.getString("productLine"));
-//				generator.writeStringField("productScale", rs.getString("productScale"));
-//				generator.writeStringField("productVendor", rs.getString("productVendor"));
-//				generator.writeStringField("productDescription", rs.getString("productDescription"));
-//				generator.writeNumberField("quantityInStock", rs.getInt("quantityInStock"));
-//				generator.writeNumberField("buyPrice", rs.getFloat("buyPrice"));
-//				generator.writeNumberField("MSRP", rs.getFloat("MSRP"));
-			}
+			while (rs.next())
+				out.write(rs.getString(1));
 		} catch (NamingException | SQLException e) {
 			e.printStackTrace();
 		} finally {
@@ -87,11 +71,21 @@ public class ModelsByProductLine extends HttpServlet {
 			}
 		}
 	}
+	
+	static void listar(PrintWriter out) {
+		
+	}
 
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		doGet(request, response);
+		
+	}
+	
+	@Override
+	protected void doDelete(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		
 	}
 
 }
