@@ -32,7 +32,7 @@ public class APIRestSevlet extends HttpServlet {
 		PrintWriter out = new PrintWriter(resp.getWriter());
 		if ((val = req.getParameter("buscar")) != null)
 			buscar(val, out);			
-		else if ((val = req.getParameter("buscar")) != null)
+		else if ((val = req.getParameter("contactos")) != null)
 			listar(out);
 	}
 		
