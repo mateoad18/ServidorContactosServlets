@@ -9,7 +9,14 @@ import java.util.stream.Collectors;
 public class Cliente {
 
 	public static void main(String[] args) {
-		String request = request("GET", "http://localhost:8080/servletsapirest/api", "buscar=Pepe");
+		String request;
+		request = request("GET", "http://localhost:8080/servletsapirest/api", "buscar=Pepe");
+		System.out.println(request);
+		request = request("GET", "http://localhost:8080/servletsapirest/api", "contactos");
+		System.out.println(request);
+		request = request("DELETE", "http://localhost:8080/servletsapirest/api", "borrar=Pepe");
+		System.out.println(request);
+		request = request("POST", "http://localhost:8080/servletsapirest/api", "nombre=Pepe&telefono=601001001");
 		System.out.println(request);
 	}
 	
