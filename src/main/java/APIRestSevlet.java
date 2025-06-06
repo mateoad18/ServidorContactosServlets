@@ -23,7 +23,7 @@ import jakarta.servlet.http.HttpServletResponse;
 public class APIRestSevlet extends HttpServlet {
 
 	private static final long serialVersionUID = 1L;
-	private static String consulta = "select telefono from telefonos where contacto = '?'";
+	private static String consulta = "select numero from telefonos where contacto = ?";
 	
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -45,9 +45,10 @@ public class APIRestSevlet extends HttpServlet {
 			DataSource ds = (DataSource) context.lookup("java:comp/env/jdbc/contactos");
 			con = ds.getConnection();
 			PreparedStatement statement = con.prepareStatement(consulta);
+			statement.setString(1, nombre);
 			rs = statement.executeQuery();
 			while (rs.next())
-				out.write(rs.getString(1));
+				out.println(rs.getString(1));
 		} catch (NamingException | SQLException e) {
 			e.printStackTrace();
 		} finally {
