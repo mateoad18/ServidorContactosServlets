@@ -29,8 +29,10 @@ public class Cliente {
 			while (true) {
 				System.out.print("Introduce un comando: ");
 				entrada = teclado.readLine();
-				if (entrada == null || entrada.trim().equalsIgnoreCase("salir"))
+				if (entrada == null || entrada.trim().equalsIgnoreCase("salir")) {
+					System.out.println("FIN DE PROGRAMA");
 					break;
+				}
 
 				String[] partes = entrada.trim().split(":");
 				String comando = partes[0].toLowerCase();
