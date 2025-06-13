@@ -31,10 +31,16 @@ public class APIRestSevlet extends HttpServlet {
 		resp.setContentType("text/plain");
 		String val;
 		PrintWriter out = new PrintWriter(resp.getWriter());
-		if ((val = req.getParameter("buscar")) != null)
+		if ((val = req.getParameter("buscar")) != null) {
 			buscar(val, out);
-		else if ((val = req.getParameter("contactos")) != null)
-			listar(out);
+			// Devuelve 200 al cliente indicando que todo a salido correctamente
+			resp.setStatus(HttpServletResponse.SC_OK);
+		} else {
+			if ((val = req.getParameter("contactos")) != null) {
+				listar(out);
+				resp.setStatus(HttpServletResponse.SC_OK);
+			}
+		}
 	}
 
 	static void buscar(String nombre, PrintWriter out) {
@@ -141,7 +147,8 @@ public class APIRestSevlet extends HttpServlet {
 			int filas = ps2.executeUpdate();
 
 			conn.commit();
-			// Devuelve un estado CREATED y un mensaje indicando que todo salió bien.
+			// Devuelve un estado CREATED 201(indica que se a creado un nuevo recurso) y un
+			// mensaje indicando que todo salió bien.
 			response.setStatus(HttpServletResponse.SC_CREATED);
 			response.getWriter().write("Se ha añadido " + filas + " contacto  correctamente");
 
@@ -173,6 +180,7 @@ public class APIRestSevlet extends HttpServlet {
 		String nombre = request.getParameter("borrar");
 
 		if (nombre == null || nombre.trim().isEmpty()) {
+			// Establece codigo 400 con un mensaje (solicitud mal formada/parametros invalidos)
 			response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Nombre del contacto no proporcionado");
 			return;
 		}
@@ -201,6 +209,7 @@ public class APIRestSevlet extends HttpServlet {
 				response.setStatus(HttpServletResponse.SC_OK);
 				response.getWriter().write("Contacto '" + nombre + "' eliminado correctamente.");
 			} else {
+				// Devuelve 404 al cliente(el servidor no encontro el recurso)
 				response.setStatus(HttpServletResponse.SC_NOT_FOUND);
 				response.getWriter().write("No se encontró el contacto: " + nombre);
 			}

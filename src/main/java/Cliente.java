@@ -4,6 +4,8 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.net.URLEncoder;
+import java.nio.charset.Charset;
 import java.util.stream.Collectors;
 
 public class Cliente {
@@ -39,7 +41,8 @@ public class Cliente {
 					if (partes.length != 2) {
 						System.out.println("Formato incorrecto. Uso: buscar:nombre");
 					} else {
-						respuesta = request("GET", "http://localhost:8080/servletsapirest/api", "buscar=" + partes[1]);
+						respuesta = request("GET", "http://localhost:8080/servletsapirest/api",
+								"buscar=" + URLEncoder.encode(partes[1], Charset.defaultCharset()));
 					}
 					break;
 
@@ -52,7 +55,7 @@ public class Cliente {
 						System.out.println("Formato incorrecto. Uso: borrar:nombre");
 					} else {
 						respuesta = request("DELETE", "http://localhost:8080/servletsapirest/api",
-								"borrar=" + partes[1]);
+								"borrar=" + URLEncoder.encode(partes[1], Charset.defaultCharset()));
 					}
 					break;
 
@@ -60,7 +63,9 @@ public class Cliente {
 					if (partes.length != 4) {
 						System.out.println("Formato incorrecto. Uso: añadir:nombre:telefono:email");
 					} else {
-						String query = "nombre=" + partes[1] + "&telefono=" + partes[2] + "&email=" + partes[3];
+						String query = "nombre=" + URLEncoder.encode(partes[1], Charset.defaultCharset()) + "&telefono="
+								+ URLEncoder.encode(partes[2], Charset.defaultCharset()) + "&email="
+								+ URLEncoder.encode(partes[3], Charset.defaultCharset());
 						respuesta = request("POST", "http://localhost:8080/servletsapirest/api", query);
 					}
 					break;
